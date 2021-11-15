@@ -15,7 +15,7 @@ const list = [
 	{ id: 6, task: "watch stream", status: TODO, priority: HIGH_PRIORITY, },
 ];
 
-/* function deleteTask(task) {
+function deleteTask(task) {
 	let taskIndex = list.findIndex(function (item) {
 		return item.task === task;
 	});
@@ -25,20 +25,20 @@ const list = [
 	});
 };
 deleteTask("wake up");
-console.log(list); */
+console.log(list);
 
 
-/* function addTask(taskValue, statusValue, priorityValue, positionValue) {
+function addTask(taskValue, statusValue, priorityValue, positionValue) {
 	list.splice(positionValue, 0, { id: list.length + 1, task: taskValue, status: statusValue, priority: priorityValue, });
 	list.forEach(function (item, index) {
 		return item.id = index + 1;
 	});
 };
 addTask("go to sleep", TODO, HIGH_PRIORITY, 6);
-console.log(list); */
+console.log(list);
 
 
-/* function changeStatus(task, status) {
+function changeStatus(task, status) {
 	list.find(function (item) {
 		if (item.task === task) {
 			return item.status = status;
@@ -46,5 +46,26 @@ console.log(list); */
 	});
 };
 changeStatus("learn JavaScript", IN_PROGRESS);
-console.log(list); */
+console.log(list);
 
+function taskStatus(status) {
+	let isPrinted = false;
+	console.log(status + ":");
+	list.find(function (item) {
+		if (item.status === status) {
+			console.log(item.task);
+			isPrinted = true;
+		};
+	});
+	if (!isPrinted) {
+		console.log('-');
+	}
+};
+
+function showList() {
+	taskStatus(TODO);
+	taskStatus(IN_PROGRESS);
+	taskStatus(DONE);
+};
+
+showList();

@@ -1,21 +1,20 @@
 'use strict';
 
-const DONE = "Done";
-const IN_PROGRESS = "In progress";
-const TODO = "ToDo";
-const LOW_PRIORITY = "Low priority";
-const HIGH_PRIORITY = "High priority";
+const DONE = 'Done';
+const IN_PROGRESS = 'In progress';
+const TODO = 'ToDo';
+const LOW_PRIORITY = 'Low';
+const HIGH_PRIORITY = 'High';
 
-const list = [
-	{ task: "wake up", status: DONE, priority: HIGH_PRIORITY, },
-	{ task: "take a shower", status: DONE, priority: LOW_PRIORITY, },
-	{ task: "have breakfast", status: DONE, priority: LOW_PRIORITY, },
-	{ task: "learn JavaScript", status: TODO, priority: HIGH_PRIORITY, },
-	{ task: "have a walk", status: TODO, priority: LOW_PRIORITY, },
-	{ task: "watch stream", status: TODO, priority: HIGH_PRIORITY, },
-];
+const list = [];
 
-let countID = 0;
+let countID = 1;
+
+function addTask(taskValue, statusValue = TODO, priorityValue = HIGH_PRIORITY) {
+	list.push({ id: countID, task: taskValue, status: statusValue, priority: priorityValue, });
+	++countID;
+};
+
 
 function deleteTask(task) {
 	let taskIndex = list.findIndex(function (item) {
@@ -23,18 +22,6 @@ function deleteTask(task) {
 	});
 	list.splice(taskIndex, 1);
 };
-deleteTask("wake up");
-console.log(list);
-
-
-function addTask(taskValue, statusValue, priorityValue) {
-	list.push({ task: taskValue, status: statusValue, priority: priorityValue, });
-	list.forEach(function (item) {
-		return item.id = ++countID;
-	});
-};
-addTask("go to sleep", TODO, HIGH_PRIORITY);
-console.log(list);
 
 
 function changeStatus(task, status) {
@@ -44,21 +31,28 @@ function changeStatus(task, status) {
 		};
 	});
 };
-changeStatus("learn JavaScript", IN_PROGRESS);
-console.log(list);
 
 
-function showTasksByState(state) {
-	let isPrinted = false;
-	console.log(state + ":");
-	list.filter(function (item) {
-		const stateValue = item.priority === state || item.status === state;
-		if (stateValue) {
-			console.log(item.task);
-			isPrinted = true;
+function changePriority(task, priority) {
+	list.find(function (item) {
+		if (item.task === task) {
+			return item.priority = priority;
 		};
 	});
-	if (!isPrinted) {
+};
+
+
+function showTasksByCondition(condition) {
+	let state = false;
+	console.log(condition + ':');
+	list.filter(function (item) {
+		const conditionValue = item.priority === condition || item.status === condition;
+		if (conditionValue) {
+			console.log(item.task);
+			state = true;
+		};
+	});
+	if (!state) {
 		console.log('-');
 	};
 };
@@ -66,22 +60,34 @@ function showTasksByState(state) {
 
 function showList(showBy) {
 	switch (showBy) {
-		case "status":
-			showTasksByState(TODO);
-			showTasksByState(IN_PROGRESS);
-			showTasksByState(DONE);
+		case 'status':
+			showTasksByCondition(TODO);
+			showTasksByCondition(IN_PROGRESS);
+			showTasksByCondition(DONE);
 			break;
-		case "priority":
-			showTasksByState(HIGH_PRIORITY);
-			showTasksByState(LOW_PRIORITY);
+		case 'priority':
+			showTasksByCondition(HIGH_PRIORITY);
+			showTasksByCondition(LOW_PRIORITY);
 			break;
 		default:
-			showTasksByState(TODO);
-			showTasksByState(IN_PROGRESS);
-			showTasksByState(DONE);
-			showTasksByState(HIGH_PRIORITY);
-			showTasksByState(LOW_PRIORITY);
+			showTasksByCondition(TODO);
+			showTasksByCondition(IN_PROGRESS);
+			showTasksByCondition(DONE);
+			showTasksByCondition(HIGH_PRIORITY);
+			showTasksByCondition(LOW_PRIORITY);
 	};
 };
 
-showList("priority");
+
+addTask('wake up', TODO, HIGH_PRIORITY);
+addTask('have breakfast', TODO, HIGH_PRIORITY);
+addTask('learn JavaScript', TODO, HIGH_PRIORITY);
+addTask('have a walk', TODO, HIGH_PRIORITY);
+deleteTask('wake up');
+addTask('go to sleep', TODO, HIGH_PRIORITY);
+changeStatus('learn JavaScript', IN_PROGRESS);
+changePriority('have a walk', LOW_PRIORITY);
+console.log(list);
+
+showList('priority');
+showList('status');

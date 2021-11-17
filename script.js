@@ -10,17 +10,18 @@ const list = [];
 
 let countID = 1;
 
+
 function addTask(taskValue, statusValue = TODO, priorityValue = HIGH_PRIORITY) {
-	list.push({ id: countID, task: taskValue, status: statusValue, priority: priorityValue, });
-	++countID;
+	list.push({ id: countID, task: taskValue, status: statusValue, priority: priorityValue });
+	countID++;
 };
 
 
-function deleteTask(task) {
-	let taskIndex = list.findIndex(function (item) {
-		return item.task === task;
+function deleteTask(id) {
+	let taskId = list.findIndex(function (item) {
+		return item.id === id;
 	});
-	list.splice(taskIndex, 1);
+	list.splice(taskId, 1);
 };
 
 
@@ -83,7 +84,7 @@ addTask('wake up', TODO, HIGH_PRIORITY);
 addTask('have breakfast', TODO, HIGH_PRIORITY);
 addTask('learn JavaScript', TODO, HIGH_PRIORITY);
 addTask('have a walk', TODO, HIGH_PRIORITY);
-deleteTask('wake up');
+deleteTask(1);
 addTask('go to sleep', TODO, HIGH_PRIORITY);
 changeStatus('learn JavaScript', IN_PROGRESS);
 changePriority('have a walk', LOW_PRIORITY);
